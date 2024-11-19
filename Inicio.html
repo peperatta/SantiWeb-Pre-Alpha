@@ -1,0 +1,89 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Inicio - SantiWeb</title>
+    <style>
+        body {
+            background-color: #ffffff;
+            font-family: Arial, sans-serif;
+            margin: 40px;
+        }
+
+        .container {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+
+        .button {
+            background-color: #19a4df;
+            border: none;
+            color: white;
+            padding: 15px 32px;
+            text-align: center;
+            text-decoration: none;
+            display: inline-block;
+            font-size: 15px;
+            margin: 4px 2px;
+            cursor: pointer;
+            transition-duration: 0.4s;
+            border-radius: 100px;
+        }
+
+        .button:hover {
+            background-color: #365ff4;
+        }
+
+        .buttons-container {
+            display: flex;
+            gap: 10px;
+        }
+
+        .welcome-message {
+            font-size: 24px;
+            color: #333;
+            margin-top: 20px;
+        }
+
+        .linea {
+            margin: 20px 0;
+        }
+
+    </style>
+</head>
+<body>
+    <div class="container">
+        <h1 style="color: #19a4df">Santi<em>Web</em></h1>
+        <div class="buttons-container">
+            <button class="button" onclick="cambiarPagina('paraTi.html')">Para Ti</button>
+            <button class="button" onclick="cambiarPagina('sobreSanti.html')">Sobre Santi</button>
+            <button class="button" onclick="cambiarPagina('santiSpots.html')">Santi Spots</button>
+        </div>
+    </div>
+
+    <hr class="linea">
+
+    <!-- Mensaje de bienvenida con el nombre de usuario -->
+    <div class="welcome-message" id="usernameDisplay"></div>
+
+    <script>
+        // Función para cambiar de página
+        function getUsernameFromURL() {
+        const params = new URLSearchParams(window.location.search);
+        return params.get('username') || 'Usuario';
+    }
+
+    // Función para cambiar de página
+    function cambiarPagina(url) {
+        const username = getUsernameFromURL(); // obtener el username de la URL
+        const nuevaUrl = `${url}?username=${encodeURIComponent(username)}`;
+        window.location.href = nuevaUrl;
+    }
+
+        // Mostrar el nombre de usuario
+        document.getElementById('usernameDisplay').textContent = 'Bienvenido, ' + getUsernameFromURL();
+    </script>
+</body>
+</html> 

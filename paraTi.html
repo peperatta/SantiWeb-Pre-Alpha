@@ -1,0 +1,140 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Para Ti - SantiWeb</title>
+    <style>
+        body {
+            background-color: #ffffff;
+            font-family: Arial, sans-serif;
+            margin: 40px;
+        }
+
+        .container {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+        }
+
+        .button {
+            background-color: #19a4df;
+            border: none;
+            color: white;
+            padding: 10px 20px;
+            font-size: 15px;
+            margin-top: 20px;
+            cursor: pointer;
+            transition-duration: 0.4s;
+            border-radius: 100px;
+        }
+
+        .button:hover {
+            background-color: #365ff4;
+        }
+
+        .welcome-message {
+            font-size: 24px;
+            color: #333;
+            margin-top: 20px;
+        }
+
+        .input-container {
+            margin-top: 30px;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+        }
+
+        .input-field {
+            width: 300px;
+            padding: 10px;
+            font-size: 16px;
+            border: 1px solid #ccc;
+            border-radius: 5px;
+        }
+
+        .message {
+            color: green;
+            margin-top: 20px;
+        }
+
+        .error-message {
+            color: red;
+            margin-top: 20px;
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <h1 style="color: #19a4df">Santi<em>Web</em></h1>
+        <div class="welcome-message" id="usernameDisplay"></div>
+
+        <!-- Contenedor para la entrada de texto -->
+        <div class="input-container">
+            <textarea id="contenido" class="input-field" rows="4" placeholder="Escribe lo que piensas aquí..."></textarea>
+            <button class="button" onclick="enviarPublicacion()">Publicar</button>
+        </div>
+
+        <!-- Mensaje de éxito o error -->
+        <div id="message" class="message"></div>
+        <div id="error-message" class="error-message"></div>
+    </div>
+
+    <script>
+        // Obtener el nombre de usuario de la URL (si se pasa como parámetro)
+        function getUsernameFromURL() {
+            const params = new URLSearchParams(window.location.search);
+            return params.get('username') || 'Usuario';
+        }
+
+        // Mostrar el nombre de usuario
+        const username = getUsernameFromURL();
+        document.getElementById('usernameDisplay').textContent = 'Bienvenido, ' + username;
+
+        // Función para enviar la publicación
+        async function enviarPublicacion() {
+            const contenido = document.getElementById('contenido').value;
+            const messageElement = document.getElementById('message');
+            const errorMessageElement = document.getElementById('error-message');
+
+            // Limpiar mensajes previos
+            messageElement.textContent = '';
+            errorMessageElement.textContent = '';
+
+            if (!contenido) {
+                errorMessageElement.textContent = 'El contenido no puede estar vacío.';
+                return;
+            }
+
+            // Crear objeto para enviar al backend
+            const data = {
+                username: username,
+                contenido: contenido
+            };
+
+            try {
+                // Enviar solicitud POST a la API
+                const response = await fetch('http://192.168.68.115:5074/Usuario/publicar', {
+                    method: 'POST',
+                    headers: {
+                        'Content-Type': 'application/json'
+                    },
+                    body: JSON.stringify(data)
+                });
+
+                const result = await response.json();
+
+                if (response.ok) {
+                    messageElement.textContent = result.message;
+                    document.getElementById('contenido').value = ''; // Limpiar campo de texto
+                } else {
+                    errorMessageElement.textContent = result.message || 'Error al publicar';
+                }
+            } catch (error) {
+                errorMessageElement.textContent = 'Error en el servidor: ' + error.message;
+            }
+        }
+    </script>
+</body>
+</html>
