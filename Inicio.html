@@ -8,62 +8,77 @@
         body {
             background-color: #ffffff;
             font-family: Arial, sans-serif;
-            margin: 40px;
+            margin: 0; /* Eliminar margen para que el rectángulo ocupe todo el ancho */
         }
 
-        .container {
-            display: flex;
-            justify-content: space-between;
-            align-items: center;
-        }
-
-        .button {
-            background-color: #19a4df;
-            border: none;
+        .header {
+            background-color: #1877f2;
             color: white;
-            padding: 15px 32px;
-            text-align: center;
-            text-decoration: none;
-            display: inline-block;
-            font-size: 15px;
-            margin: 4px 2px;
-            cursor: pointer;
-            transition-duration: 0.4s;
-            border-radius: 100px;
+            padding: 20px;
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
         }
 
-        .button:hover {
-            background-color: #365ff4;
+        .header h1 {
+            margin: 0; /* Eliminar margen del título */
         }
 
         .buttons-container {
             display: flex;
-            gap: 10px;
+            justify-content: space-between;
+            background-color: #8cceea; /* Color de fondo para el contenedor de botones */
+            padding: 5px 0; /* Espaciado vertical reducido */
+            border-top: 1px solid black; /* Línea superior */
+            border-bottom: 1px solid black; /* Línea inferior */
+            height: 40px; /* Altura del contenedor de botones */
+        }
+
+        .button {
+            background-color: #8cceea; /* Color de los botones */
+            border: none;
+            color: black; /* Cambiar el color del texto a negro */
+            padding: 10px 15px; /* Espaciado interno de los botones */
+            text-align: center;
+            text-decoration: none;
+            display: inline-block;
+            font-size: 14px; 
+            cursor: pointer;
+            transition-duration: 0.4s; 
+            margin: 0 5px; 
+            margin-left: 80px;
+            margin-right: 80px;
+        }
+
+        .button:hover {
+            color: #fdfdfd; /* Color al pasar el mouse */
         }
 
         .welcome-message {
-            font-size: 24px;
+            font-size: 15px;
             color: #333;
-            margin-top: 20px;
-        }
-
-        .linea {
-            margin: 20px 0;
+            margin: 20px; 
         }
 
     </style>
 </head>
 <body>
-    <div class="container">
-        <h1 style="color: #19a4df">Santi<em>Web</em></h1>
-        <div class="buttons-container">
-            <button class="button" onclick="cambiarPagina('paraTi.html')">Para Ti</button>
-            <button class="button" onclick="cambiarPagina('sobreSanti.html')">Sobre Santi</button>
-            <button class="button" onclick="cambiarPagina('santiSpots.html')">Santi Spots</button>
-        </div>
+    <div class="header">
+        <h1>Santi<em>Web</em></h1>
     </div>
 
-    <hr class="linea">
+    <div class="buttons-container">
+        <button class="button" onclick="cambiarPagina('paraTi.html')">Para Ti</button>
+        <div style="border-left: 1px solid black; height: 40px;"></div> <!-- Línea vertical -->
+        <button class="button" onclick="cambiarPagina('profile.html')">Mi Perfil</button>
+        <div style="border-left: 1px solid black; height: 40px;"></div> <!-- Línea vertical -->
+        <button class="button" onclick="cambiarPagina('santinews.html')">Santi News</button>
+        <div style="border-left: 1px solid black; height: 40px;"></div> <!-- Línea vertical -->
+        <button class="button" onclick="cambiarPagina('sobreSanti.html')">Sobre Santi</button>
+        <div style="border-left: 1px solid black; height: 40px;"></div> <!-- Línea vertical -->
+        <button class="button" onclick="cambiarPagina('infopro.html')">Información Extra</button>
+    </div>
+
 
     <!-- Mensaje de bienvenida con el nombre de usuario -->
     <div class="welcome-message" id="usernameDisplay"></div>
@@ -71,19 +86,19 @@
     <script>
         // Función para cambiar de página
         function getUsernameFromURL() {
-        const params = new URLSearchParams(window.location.search);
-        return params.get('username') || 'Usuario';
-    }
+            const params = new URLSearchParams(window.location.search);
+            return params.get('username') || 'Usuario';
+        }
 
-    // Función para cambiar de página
-    function cambiarPagina(url) {
-        const username = getUsernameFromURL(); // obtener el username de la URL
-        const nuevaUrl = `${url}?username=${encodeURIComponent(username)}`;
-        window.location.href = nuevaUrl;
-    }
+        // Función para cambiar de página
+        function cambiarPagina(url) {
+            const username = getUsernameFromURL(); // obtener el username de la URL
+            const nuevaUrl = `${url}?username=${encodeURIComponent(username)}`;
+            window.location.href = nuevaUrl;
+        }
 
         // Mostrar el nombre de usuario
-        document.getElementById('usernameDisplay').textContent = 'Bienvenido, ' + getUsernameFromURL();
+        document.getElementById('usernameDisplay').textContent = 'Bienvenido a SantiWeb, ' + getUsernameFromURL();
     </script>
 </body>
-</html> 
+</html>
