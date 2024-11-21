@@ -8,35 +8,60 @@
         body {
             background-color: #ffffff;
             font-family: Arial, sans-serif;
-            margin: 40px;
+            margin: 0; /* Eliminar margen para que el rectángulo ocupe todo el ancho */
         }
 
-        .container {
+        .header {
+            background-color: #1877f2;
+            color: white;
+            padding: 20px;
             display: flex;
-            flex-direction: column;
             align-items: center;
+            justify-content: space-between;
+        }
+
+        .header h1 {
+            margin: 0; /* Eliminar margen del título */
+        }
+
+        .buttons-container {
+            display: flex;
+            justify-content: space-between;
+            background-color: #8cceea; /* Color de fondo para el contenedor de botones */
+            padding: 5px 0; /* Espaciado vertical reducido */
+            border-top: 1px solid black; /* Línea superior */
+            border-bottom: 1px solid black; /* Línea inferior */
+            height: 40px; /* Altura del contenedor de botones */
         }
 
         .button {
-            background-color: #19a4df;
+            background-color: #8cceea; /* Color de los botones */
             border: none;
-            color: white;
-            padding: 10px 20px;
-            font-size: 15px;
-            margin-top: 20px;
+            color: black; /* Cambiar el color del texto a negro */
+            padding: 10px 15px; /* Espaciado interno de los botones */
+            text-align: center;
+            text-decoration: none;
+            display: inline-block;
+            font-size: 14px; 
             cursor: pointer;
-            transition-duration: 0.4s;
-            border-radius: 100px;
+            transition-duration: 0.4s; 
+            margin: 0 5px; 
+            margin-left: 80px;
+            margin-right: 80px;
         }
 
         .button:hover {
-            background-color: #365ff4;
+            color: #ffffff; /* Color al pasar el mouse */
+        }
+
+        .linea {
+            margin: 20px 0;
         }
 
         .welcome-message {
-            font-size: 24px;
+            font-size: 15px;
             color: #333;
-            margin-top: 20px;
+            margin: 20px; /* Espaciado alrededor del mensaje de bienvenida */
         }
 
         .input-container {
@@ -44,6 +69,7 @@
             display: flex;
             flex-direction: column;
             align-items: center;
+            display: none; /* Oculta el contenedor inicialmente */
         }
 
         .input-field {
@@ -52,6 +78,7 @@
             font-size: 16px;
             border: 1px solid #ccc;
             border-radius: 5px;
+            box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
         }
 
         .message {
@@ -63,22 +90,74 @@
             color: red;
             margin-top: 20px;
         }
+
+        .publicacion {
+            border : 1px solid #ccc;
+            border-radius: 5px;
+            padding: 10px;
+            background-color: #f9f9f9;
+            box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+            margin-left: 60px;
+            margin-right: 60px;
+            margin-top: 10px;
+        }
+
+        .publicacion-header {
+            display: flex;
+            justify-content: space-between; /* Alinea los elementos a los extremos */
+            font-size: 12px;
+            color: #666; /* Color por defecto para el texto */
+        }
+        .publicacion-header .username {
+            color: rgb(68, 68, 68); /* Cambiar el color del nombre de usuario a negro */
+            font-size: 15px;
+        }
+        .publicacion-header .fecha {
+            color: #666; /* Color para la fecha */
+            font-size: 15px;
+        }
+
+        .publicacion-contenido {
+            margin-top: 25px;
+            font-size: 14px;
+        }
     </style>
 </head>
 <body>
+    <div class="header">
+        <h1>Santi<em>Web</em></h1>
+    </div>
+
+    <div class="buttons-container">
+        <button class="button" onclick="cambiarPagina('Inicio.html')">Inicio</button>
+        <div style="border-left: 1px solid black; height: 40px;"></div> <!-- Línea vertical -->
+        <button class="button" onclick="cambiarPagina('profile.html')">Mi Perfil</button>
+        <div style="border-left: 1px solid black; height: 40px;"></div> <!-- Línea vertical -->
+        <button class="button" onclick="cambiarPagina('santinews.html')">Santi News</button>
+        <div style="border-left: 1px solid black; height: 40px;"></div> <!-- Línea vertical -->
+        <button class="button" onclick="cambiarPagina('sobreSanti.html')">Sobre Santi</button>
+        <div style="border-left: 1px solid black; height: 40px;"></div> <!-- Línea vertical -->
+        <button class="button" onclick="cambiarPagina('infopro.html')">Información Extra</button>
+    </div>
+
     <div class="container">
-        <h1 style="color: #19a4df">Santi<em>Web</em></h1>
         <div class="welcome-message" id="usernameDisplay"></div>
 
+        <!-- Botón para mostrar la caja de texto -->
+        <button class="button" id="opinarButton" onclick="mostrarFormulario()" style="margin-left: 20px; border: 1px; background-color: #8cceea; color: rgb(0, 0, 0);">Opinar</button>
+
         <!-- Contenedor para la entrada de texto -->
-        <div class="input-container">
+        <div class="input-container" id="inputContainer">
             <textarea id="contenido" class="input-field" rows="4" placeholder="Escribe lo que piensas aquí..."></textarea>
-            <button class="button" onclick="enviarPublicacion()">Publicar</button>
+            <button class="button" onclick="enviarPublicacion()" style="border: 1px; background-color: #8cceea; color: rgb(0, 0, 0);">Publicar</button>
         </div>
 
         <!-- Mensaje de éxito o error -->
         <div id="message" class="message"></div>
         <div id="error-message" class="error-message"></div>
+
+        <!-- Contenedor para las publicaciones -->
+        <div id="publicacionesContainer"></div>
     </div>
 
     <script>
@@ -90,7 +169,13 @@
 
         // Mostrar el nombre de usuario
         const username = getUsernameFromURL();
-        document.getElementById('usernameDisplay').textContent = 'Bienvenido, ' + username;
+        document.getElementById('usernameDisplay').textContent = username + ', dinos en que estas pensando';
+
+        // Mostrar el formulario al hacer clic en el botón "Opinar"
+        function mostrarFormulario() {
+            const inputContainer = document.getElementById('inputContainer');
+            inputContainer.style.display = 'flex'; // Muestra el contenedor de entrada
+        }
 
         // Función para enviar la publicación
         async function enviarPublicacion() {
@@ -107,15 +192,17 @@
                 return;
             }
 
+            const fechaHoraActual = new Date().toISOString(); 
             // Crear objeto para enviar al backend
             const data = {
                 username: username,
-                contenido: contenido
+                contenido: contenido,
+                fecha: fechaHoraActual 
             };
 
             try {
                 // Enviar solicitud POST a la API
-                const response = await fetch('http://192.168.68.115:5074/Usuario/publicar', {
+                const response = await fetch('https://santiwebapi-b9fe9c14de84.herokuapp.com/api/publicaciones/publicar', {
                     method: 'POST',
                     headers: {
                         'Content-Type': 'application/json'
@@ -128,6 +215,7 @@
                 if (response.ok) {
                     messageElement.textContent = result.message;
                     document.getElementById('contenido').value = ''; // Limpiar campo de texto
+                    cargarPublicaciones(); // Cargar publicaciones después de publicar
                 } else {
                     errorMessageElement.textContent = result.message || 'Error al publicar';
                 }
@@ -135,6 +223,44 @@
                 errorMessageElement.textContent = 'Error en el servidor: ' + error.message;
             }
         }
+
+        // Función para cargar las últimas cinco publicaciones
+        async function cargarPublicaciones() {
+            const publicacionesContainer = document.getElementById('publicacionesContainer');
+            publicacionesContainer.innerHTML = ''; // Limpiar el contenedor antes de cargar nuevas publicaciones
+
+            try {
+                const response = await fetch('https://santiwebapi-b9fe9c14de84.herokuapp.com/api/publicaciones/ultimas-publicaciones');
+                const publicaciones = await response.json();
+
+                publicaciones.forEach(publicacion => {
+                    const publicacionDiv = document.createElement('div');
+                    publicacionDiv.className = 'publicacion';
+
+                    publicacionDiv.innerHTML = `
+                    <div class="publicacion-header">
+                    <span class="username">${publicacion.username}</span> <!-- Nombre de usuario en negro -->
+                    <span class="fecha">${publicacion.fecha}</span> <!-- Fecha a la derecha -->
+                    </div>
+                    <div class="publicacion-contenido">${publicacion.contenido}</div>
+                    `;
+
+                    publicacionesContainer.appendChild(publicacionDiv);
+                });
+            } catch (error) {
+                console.error('Error al cargar las publicaciones:', error);
+            }
+        }
+
+        // Función para cambiar de página
+        function cambiarPagina(url) {
+            const username = getUsernameFromURL(); // obtener el username de la URL
+            const nuevaUrl = `${url}?username=${encodeURIComponent(username)}`;
+            window.location.href = nuevaUrl;
+        }
+
+        // Cargar las publicaciones al cargar la página
+        window.onload = cargarPublicaciones;
     </script>
 </body>
 </html>
