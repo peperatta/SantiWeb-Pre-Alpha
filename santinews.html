@@ -1,0 +1,151 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>HomeSanti</title>
+
+    <style>
+        /* Estilo general */
+        body {
+            background-color: #ffffff;
+            font-family: Arial, sans-serif;
+            margin: 0;
+            padding: 0;
+        }
+
+        .header {
+            background-color: #1877f2;
+            color: white;
+            padding: 20px;
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            top: 0;
+            left: 0;
+            right: 0;
+            z-index: 10;
+            width: 100%; /* Aseguramos que el encabezado ocupe todo el ancho */
+        }
+
+        .header h1 {
+            margin: 0;
+        }
+
+        .buttons-container {
+            display: flex;
+            justify-content: space-between;
+            background-color: #8cceea;
+            padding: 5px 0;
+            border-top: 1px solid black;
+            border-bottom: 1px solid black;
+            height: 40px;
+            top: 60px; /* Los botones estarán debajo del encabezado */
+            left: 0;
+            right: 0;
+            z-index: 9;
+        }
+
+        .button {
+            background-color: #8cceea; /* Color de los botones */
+            border: none;
+            color: black; /* Cambiar el color del texto a negro */
+            padding: 10px 15px; /* Espaciado interno de los botones */
+            text-align: center;
+            text-decoration: none;
+            display: inline-block;
+            font-size: 14px; 
+            cursor: pointer;
+            transition-duration: 0.4s; 
+            margin: 0 5px; 
+            margin-left: 80px;
+            margin-right: 80px;
+        }
+
+        .button:hover {
+            color: white;
+        }
+
+        /* Contenedor para el contenido desplazable */
+        .container {
+            margin-top: 5px; /* Deja espacio para el encabezado y los botones */
+            padding: 10px;
+            height: calc(100vh - 160px); /* Ajusta el alto para ocupar el espacio restante sin invadir el área de los botones */
+            overflow-y: auto; /* Permite desplazarse por el contenido */
+        }
+
+        .news-item {
+            margin-bottom: 20px;
+            padding: 15px;
+            border: 1px solid #ddd;
+            border-radius: 5px;
+            background-color: #f9f9f9;
+            box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+        }
+
+        .news-item p {
+            font-size: 16px;
+            color: #333;
+        }
+
+        .news-item strong {
+            color: #1877f2;
+        }
+
+        /* Estilo para el contenido */
+        .linea {
+            margin: 20px 0;
+        }
+
+        .margen {
+            margin: 100px;
+        }
+    </style>
+</head>
+
+<body>
+    <div class="header">
+        <h1>Santi<em>Web</em></h1>
+    </div>
+
+    <div class="buttons-container">
+        <button class="button" onclick="cambiarPagina('Inicio.html')">Inicio</button>
+        <div style="border-left: 1px solid black; height: 40px;"></div> <!-- Línea vertical -->
+        <button class="button" onclick="cambiarPagina('paraTi.html')">Para Ti</button>
+        <div style="border-left: 1px solid black; height: 40px;"></div> <!-- Línea vertical -->
+        <button class="button" onclick="cambiarPagina('profile.html')">Mi Perfil</button>
+        <div style="border-left: 1px solid black; height: 40px;"></div> <!-- Línea vertical -->
+        <button class="button" onclick="cambiarPagina('sobreSanti.html')">Sobre Santi</button>
+        <div style="border-left: 1px solid black; height: 40px;"></div> <!-- Línea vertical -->
+        <button class="button" onclick="cambiarPagina('infopro.html')">Información Extra</button>
+    </div>
+
+    <div class="container">
+        <div class="news-item">
+            <p><strong>Viernes 22 Nov 2024</strong><br><br>Finalmente, SantiWeb se lanza públicamente y en sus primeras horas de funcionamiento, alcanza más de veinte usuarios registrados.</p>
+        </div>
+
+        <div class="news-item">
+            <p><strong>Miércoles 19 Nov 2024</strong><br><br>Los desarrolladores adquieren el dominio SantiWeb.online, consolidando la presencia en línea del proyecto.</p>
+        </div>
+
+        <div class="news-item">
+            <p><strong>Viernes 8 Nov 2024</strong><br><br>Se inicia el desarrollo del back-end, retomando la visión original de SantiWeb.</p>
+        </div>
+
+        <div class="news-item">
+            <p><strong>Viernes 24 Dic 2023</strong><br><br>En esta fecha, el proyecto de SantiWeb fue suspendido temporalmente, con el desarrollo del front-end incompleto.</p>
+        </div>
+
+        <div class="news-item">
+            <p><strong>Jueves 23 Nov 2023</strong><br><br>Comienza el proceso de brainstorming que dio origen a la idea de una plataforma en línea para conectar a los usuarios con Santi.</p>
+        </div>
+    </div>
+
+    <script>
+        function cambiarPagina(url) {
+            window.location.href = url;
+        }
+    </script>
+</body>
+</html>
