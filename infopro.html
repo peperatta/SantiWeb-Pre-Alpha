@@ -1,0 +1,136 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Información Extra - SantiWeb</title>
+    <style>
+        body {
+            background-color: #ffffff;
+            font-family: Arial, sans-serif;
+            margin: 0;
+        }
+
+        .header {
+            background-color: #1877f2;
+            color: white;
+            padding: 20px;
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+        }
+
+        .header h1 {
+            margin: 0;
+        }
+
+        .info-container {
+            display: flex;
+            flex-direction: column;
+            margin: 20px;
+            padding: 20px;
+            background-color: #f9f9f9;
+            border-radius: 5px;
+            box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+        }
+
+        .info-header {
+            font-size: 22px;
+            color: #333;
+            margin-bottom: 20px;
+            text-align: center;
+        }
+
+        .info-content {
+            font-size: 16px;
+            color: #555;
+            margin-bottom: 20px;
+        }
+
+        .quote {
+            font-size: 18px;
+            font-style: italic;
+            color: #888;
+            text-align: center;
+            margin-top: 40px;
+        }
+
+        .buttons-container {
+            display: flex;
+            justify-content: space-between;
+            background-color: #8cceea;
+            padding: 5px 0;
+            border-top: 1px solid black;
+            border-bottom: 1px solid black;
+            height: 40px;
+        }
+
+        .button {
+            background-color: #8cceea; /* Color de los botones */
+            border: none;
+            color: black; /* Cambiar el color del texto a negro */
+            padding: 10px 15px; /* Espaciado interno de los botones */
+            text-align: center;
+            text-decoration: none;
+            display: inline-block;
+            font-size: 14px; 
+            cursor: pointer;
+            transition-duration: 0.4s; 
+            margin: 0 5px; 
+            margin-left: 80px;
+            margin-right: 80px;
+        }
+
+        .button:hover {
+            color: #ffffff;
+        }
+
+        .linea {
+            margin: 20px 0;
+        }
+    </style>
+</head>
+<body>
+    <div class="header">
+        <h1>Santi<em>Web</em></h1>
+    </div>
+
+    <!-- Barra de navegación -->
+    <div class="buttons-container">
+        <button class="button" onclick="cambiarPagina('Inicio.html')">Inicio</button>
+        <div style="border-left: 1px solid black; height: 40px;"></div>
+        <button class="button" onclick="cambiarPagina('paraTi.html')">Para Ti</button>
+        <div style="border-left: 1px solid black; height: 40px;"></div>
+        <button class="button" onclick="cambiarPagina('santinews.html')">Santi News</button>
+        <div style="border-left: 1px solid black; height: 40px;"></div>
+        <button class="button" onclick="cambiarPagina('sobreSanti.html')">Sobre Santi</button>
+        <div style="border-left: 1px solid black; height: 40px;"></div>
+        <button class="button" onclick="cambiarPagina('infopro.html')">Información Extra</button>
+    </div>
+
+    <div class="info-container">
+        <div class="info-header">Información Extra</div>
+
+        <div class="info-content">
+            <p><strong>Creador:</strong> Capel</p>
+            <p><strong>Fecha de publicación de SantiWeb:</strong> Noviembre 2024</p>
+            <p><strong>Versión actual:</strong> Pre Alpha 1.0</p>
+            <p><strong>Permiso:</strong> SantiWeb tiene el permiso del propio Santiago de la Garza para existir.</p>
+            <p><strong>BackEnd:</strong> Gabriel Martínez</p>
+            <p><strong>FrontEnd:</strong> Gabriel Martínez</p>
+            <p><strong>Para dudas o más información:</strong> capel@santiweb.online</p>
+        </div>
+
+        <div class="quote">
+            <p>"Disfruten a Santi" - Capel</p>
+        </div>
+    </div>
+
+    <script>
+        // Función para cambiar de página
+        function cambiarPagina(url) {
+            window.location.href = url;
+        }
+    </script>
+</body>
+</html>
