@@ -143,7 +143,8 @@
                 showMessage('El usuario ya existe', true);
             } else if (response.ok) {
                 showMessage('Usuario registrado exitosamente');
-                window.location.href = `inicio.html?username=${encodeURIComponent(username)}`;
+                // Redirigir a la página de inicio de sesión y pasar el nombre de usuario
+                window.location.href = `iniciosesion.html?username=${encodeURIComponent(username)}`;
             } else {
                 showMessage('Error al registrar usuario', true);
             }
@@ -155,6 +156,3 @@
 
 </body>
 </html>
-
-
-
