@@ -8,7 +8,7 @@
         body {
             background-color: #ffffff;
             font-family: Arial, sans-serif;
-            margin: 0; /* Eliminar margen para que el rectángulo ocupe todo el ancho */
+            margin: 0;
         }
 
         .header {
@@ -21,24 +21,24 @@
         }
 
         .header h1 {
-            margin: 0; /* Eliminar margen del título */
+            margin: 0;
         }
 
         .buttons-container {
             display: flex;
             justify-content: space-between;
-            background-color: #8cceea; /* Color de fondo para el contenedor de botones */
-            padding: 5px 0; /* Espaciado vertical reducido */
-            border-top: 1px solid black; /* Línea superior */
-            border-bottom: 1px solid black; /* Línea inferior */
-            height: 40px; /* Altura del contenedor de botones */
+            background-color: #8cceea;
+            padding: 5px 0;
+            border-top: 1px solid black;
+            border-bottom: 1px solid black;
+            height: 40px;
         }
 
         .button {
-            background-color: #8cceea; /* Color de los botones */
+            background-color: #8cceea;
             border: none;
-            color: black; /* Cambiar el color del texto a negro */
-            padding: 10px 15px; /* Espaciado interno de los botones */
+            color: black;
+            padding: 10px 15px;
             text-align: center;
             text-decoration: none;
             display: inline-block;
@@ -51,7 +51,7 @@
         }
 
         .button:hover {
-            color: #fdfdfd; /* Color al pasar el mouse */
+            color: #fdfdfd;
         }
 
         .welcome-message {
@@ -59,7 +59,6 @@
             color: #333;
             margin: 20px; 
         }
-
     </style>
 </head>
 <body>
@@ -69,36 +68,34 @@
 
     <div class="buttons-container">
         <button class="button" onclick="cambiarPagina('paraTi.html')">Para Ti</button>
-        <div style="border-left: 1px solid black; height: 40px;"></div> <!-- Línea vertical -->
+        <div style="border-left: 1px solid black; height: 40px;"></div>
         <button class="button" onclick="cambiarPagina('profile.html')">Mi Perfil</button>
-        <div style="border-left: 1px solid black; height: 40px;"></div> <!-- Línea vertical -->
+        <div style="border-left: 1px solid black; height: 40px;"></div>
         <button class="button" onclick="cambiarPagina('santinews.html')">Santi News</button>
-        <div style="border-left: 1px solid black; height: 40px;"></div> <!-- Línea vertical -->
+        <div style="border-left: 1px solid black; height: 40px;"></div>
         <button class="button" onclick="cambiarPagina('sobreSanti.html')">Sobre Santi</button>
-        <div style="border-left: 1px solid black; height: 40px;"></div> <!-- Línea vertical -->
+        <div style="border-left: 1px solid black; height: 40px;"></div>
         <button class="button" onclick="cambiarPagina('infopro.html')">Información Extra</button>
     </div>
 
-
-    <!-- Mensaje de bienvenida con el nombre de usuario -->
     <div class="welcome-message" id="usernameDisplay"></div>
 
     <script>
-        // Función para cambiar de página
-        function getUsernameFromURL() {
-            const params = new URLSearchParams(window.location.search);
-            return params.get('username') || 'Usuario';
+        function getUsernameFromLocalStorage() {
+            return localStorage.getItem('username') || 'Usuario';
         }
 
-        // Función para cambiar de página
         function cambiarPagina(url) {
-            const username = getUsernameFromURL(); // obtener el username de la URL
-            const nuevaUrl = `${url}?username=${encodeURIComponent(username)}`;
-            window.location.href = nuevaUrl;
+            window.location.href = url;
         }
 
         // Mostrar el nombre de usuario
-        document.getElementById('usernameDisplay').textContent = 'Bienvenido a SantiWeb, ' + getUsernameFromURL();
+        const username = getUsernameFromLocalStorage();
+        if (username === 'Usuario') {
+            window.location.href = 'login.html'; // Redirige si no hay usuario
+        } else {
+            document.getElementById('usernameDisplay').textContent = `Bienvenido a SantiWeb, ${username}`;
+        }
     </script>
 </body>
 </html>
