@@ -141,7 +141,10 @@
                 showMessage('Usuario o contraseña incorrectos', true);
             } else if (response.ok) {
                 showMessage('Inicio de sesión exitoso');
-                window.location.href = `inicio.html?username=${encodeURIComponent(username)}`;
+                // Guardar el username en localStorage
+                localStorage.setItem('username', username);
+                // Redirigir al usuario
+                window.location.href = 'inicio.html';
             } else {
                 showMessage('Error al iniciar sesión', true);
             }
@@ -153,6 +156,3 @@
 
 </body>
 </html>
-
-
-
