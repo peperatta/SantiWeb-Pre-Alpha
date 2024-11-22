@@ -10,6 +10,8 @@
             font-family: Arial, sans-serif;
             margin: 0;
             padding: 0;
+            display: flex;
+            flex-direction: column;
         }
 
         .header {
@@ -19,10 +21,7 @@
             display: flex;
             align-items: center;
             justify-content: space-between;
-            top: 0;
-            left: 0;
-            right: 0;
-            z-index: 10;
+            width: 100%;
         }
 
         .header h1 {
@@ -36,11 +35,8 @@
             padding: 5px 0;
             border-top: 1px solid black;
             border-bottom: 1px solid black;
-            height: 40px;  /* Aseguramos que el contenedor de botones no cambie de tamaño */
-            top: 60px; /* Mantenerlo debajo del encabezado */
-            left: 0;
-            right: 0;
-            z-index: 11;
+            height: 40px;
+            width: 100%;
         }
 
         .button {
@@ -51,22 +47,40 @@
             text-align: center;
             text-decoration: none;
             display: inline-block;
-            font-size: 14px; 
+            font-size: 14px;
             cursor: pointer;
-            transition-duration: 0.4s; 
-            margin: 0 5px; 
-            margin-left: 80px;
-            margin-right: 80px;
+            transition-duration: 0.4s;
+            margin: 0 5px;
         }
 
         .button:hover {
             color: #ffffff;
         }
 
-        .container {
-            margin-top: 10px; /* Para dejar espacio debajo del encabezado y los botones */
+        .main-container {
+            display: flex;
+            margin-top: 10px;
             padding: 10px;
-            height: calc(100vh - 160px); /* Ajusta el alto para ocupar el espacio restante sin invadir el área de los botones */
+            flex-grow: 1;
+        }
+
+        .left-container {
+            width: 30%;
+            padding: 20px;
+            border: 1px solid #ccc;
+            margin-right: 20px;
+            box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+            background-color: #f9f9f9;
+        }
+
+        .right-container {
+            width: 65%;
+            padding: 20px;
+            border: 1px solid #ccc;
+            box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+            background-color: #f9f9f9;
+            height: auto;
+            max-height: 500px;
             overflow-y: auto;
         }
 
@@ -109,9 +123,7 @@
             padding: 10px;
             background-color: #f9f9f9;
             box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
-            margin-left: 60px;
-            margin-right: 60px;
-            margin-top: 10px;
+            margin-bottom: 15px;
         }
 
         .publicacion-header {
@@ -135,6 +147,7 @@
             margin-top: 25px;
             font-size: 14px;
         }
+
     </style>
 </head>
 <body>
@@ -154,20 +167,23 @@
         <button class="button" onclick="cambiarPagina('infopro.html')">Información Extra</button>
     </div>
 
-    <div class="container">
-        <div class="welcome-message" id="usernameDisplay"></div>
+    <div class="main-container">
+        <div class="left-container">
+            <h3>Aquí puedes escribir lo que Santi te hace pensar o sentir</h3>
+            <button class="button" id="opinarButton" onclick="mostrarFormulario()">Opinar</button>
 
-        <button class="button" id="opinarButton" onclick="mostrarFormulario()" style="margin-left: 20px; border: 1px; background-color: #8cceea; color: rgb(0, 0, 0);">Opinar</button>
+            <div class="input-container" id="inputContainer">
+                <textarea id="contenido" class="input-field" rows="4" placeholder="Escribe lo que piensas aquí..."></textarea>
+                <button class="button" onclick="enviarPublicacion()">Publicar</button>
+            </div>
 
-        <div class="input-container" id="inputContainer">
-            <textarea id="contenido" class="input-field" rows="4" placeholder="Escribe lo que piensas aquí..."></textarea>
-            <button class="button" onclick="enviarPublicacion()" style="border: 1px; background-color: #8cceea; color: rgb(0, 0, 0);">Publicar</button>
+            <div id="message" class="message"></div>
+            <div id="error-message" class="error-message"></div>
         </div>
 
-        <div id="message" class="message"></div>
-        <div id="error-message" class="error-message"></div>
-
-        <div id="publicacionesContainer"></div>
+        <div class="right-container" id="publicacionesContainer">
+            <!-- Aquí se cargarán las publicaciones -->
+        </div>
     </div>
 
     <script>
