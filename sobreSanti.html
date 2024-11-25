@@ -40,25 +40,27 @@
             border-top: 1px solid black;
             border-bottom: 1px solid black;
             height: 40px;
+            width: 100%;
         }
 
         .button {
-            background-color: #8cceea; /* Color de los botones */
+            background-color: #8cceea;
             border: none;
-            color: black; /* Cambiar el color del texto a negro */
-            padding: 10px 15px; /* Espaciado interno de los botones */
+            color: black;
+            padding: 10px 15px;
             text-align: center;
             text-decoration: none;
             display: inline-block;
-            font-size: 14px; 
+            font-size: 11px;
             cursor: pointer;
-            transition-duration: 0.4s; 
-            margin: 0 5px; 
+            transition-duration: 0.4s;
+            margin: 0 5px;
             margin-left: 80px;
             margin-right: 80px;
         }
 
         .button:hover {
+            background-color: #56b7d4;
             color: white;
         }
 
@@ -146,13 +148,17 @@
     <!-- Contenedor de botones -->
     <div class="buttons-container">
         <button class="button" onclick="cambiarPagina('Inicio.html')">Inicio</button>
-        <div style="border-left: 1px solid black; height: 40px;"></div> <!-- Línea vertical -->
+        <div style="border-left: 1px solid black; height: 40px;"></div>
         <button class="button" onclick="cambiarPagina('paraTi.html')">Para Ti</button>
-        <div style="border-left: 1px solid black; height: 40px;"></div> <!-- Línea vertical -->
-        <button class="button" onclick="cambiarPagina('santinews.html')">Mi Perfil</button>
-        <div style="border-left: 1px solid black; height: 40px;"></div> <!-- Línea vertical -->
+        <div style="border-left: 1px solid black; height: 40px;"></div>
+        <button class="button" onclick="cambiarPagina('profile.html')">Mi Perfil</button>
+        <div style="border-left: 1px solid black; height: 40px;"></div>
+        <button class="button" onclick="cambiarPagina('busqueda.html')">Buscar</button>
+        <div style="border-left: 1px solid black; height: 40px;"></div>
         <button class="button" onclick="cambiarPagina('santinews.html')">Santi News</button>
-        <div style="border-left: 1px solid black; height: 40px;"></div> <!-- Línea vertical -->
+        <div style="border-left: 1px solid black; height: 40px;"></div>
+        <button class="button" onclick="cambiarPagina('sobreSanti.html')"><b>Sobre Santi</b></button>
+        <div style="border-left: 1px solid black; height: 40px;"></div>
         <button class="button" onclick="cambiarPagina('infopro.html')">Información Extra</button>
     </div>
 
