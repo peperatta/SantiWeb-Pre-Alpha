@@ -325,7 +325,7 @@
 
                 if (response.ok) {
                     const newLikes = isLiked ? currentLikes - 1 : currentLikes + 1;
-                    button.textContent = `👍 ${newLikes}`;
+                    button.textContent = `👍 Enviado`;
                     button.classList.toggle('liked');
                 } else {
                     button.textContent = `👍🏻 ${currentLikes}`;
