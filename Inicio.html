@@ -9,6 +9,9 @@
             background-color: #ffffff;
             font-family: Arial, sans-serif;
             margin: 0;
+            padding: 0;
+            display: flex;
+            flex-direction: column;
         }
 
         .header {
@@ -18,6 +21,7 @@
             display: flex;
             align-items: center;
             justify-content: space-between;
+            width: 100%;
         }
 
         .header h1 {
@@ -32,6 +36,7 @@
             border-top: 1px solid black;
             border-bottom: 1px solid black;
             height: 40px;
+            width: 100%;
         }
 
         .button {
@@ -42,39 +47,129 @@
             text-align: center;
             text-decoration: none;
             display: inline-block;
-            font-size: 14px; 
+            font-size: 11px;
             cursor: pointer;
-            transition-duration: 0.4s; 
-            margin: 0 5px; 
+            transition-duration: 0.4s;
+            margin: 0 5px;
             margin-left: 80px;
             margin-right: 80px;
         }
 
         .button:hover {
-            color: #fdfdfd;
+            color: #ffffff;
+        }
+
+        .main-container {
+            display: flex;
+            margin-top: 10px;
+            padding: 10px;
+            flex-grow: 1;
+        }
+
+        .left-container {
+            width: 30%;
+            padding: 20px;
+            border: 1px solid #ccc;
+            margin-right: 20px;
+            box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+            background-color: #f9f9f9;
+        }
+
+        .right-container {
+            width: 65%;
+            padding: 20px;
+            border: 1px solid #ccc;
+            box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+            background-color: #f9f9f9;
+            height: auto;
+            max-height: 500px;
+            overflow-y: auto;
         }
 
         .welcome-message {
             font-size: 15px;
             color: #333;
             margin: 20px;
-            line-height: 1.6;
         }
 
-        .welcome-message h2 {
-            font-size: 22px;
-            color: #1877f2;
-            margin-bottom: 10px;
+        .input-container {
+            margin-top: 30px;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            display: none;
         }
 
-        .welcome-message p {
+        .input-field {
+            width: 300px;
+            padding: 10px;
             font-size: 16px;
-            color: #555;
+            border: 1px solid #ccc;
+            border-radius: 5px;
+            box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
         }
 
-        .welcome-message ul {
-            list-style-type: disc;
-            padding-left: 20px;
+        .message {
+            color: green;
+            margin-top: 20px;
+        }
+
+        .error-message {
+            color: red;
+            margin-top: 20px;
+        }
+
+        .publicacion {
+            border: 1px solid #ccc;
+            border-radius: 5px;
+            padding: 10px;
+            background-color: #f9f9f9;
+            box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+            margin-bottom: 15px;
+        }
+
+        .publicacion-header {
+            display: flex;
+            justify-content: space-between;
+            font-size: 12px;
+            color: #666;
+        }
+
+        .publicacion-header .username {
+            color: rgb(68, 68, 68);
+            font-size: 15px;
+        }
+
+        .publicacion-header .fecha {
+            color: #666;
+            font-size: 15px;
+        }
+
+        .publicacion-contenido {
+            margin-top: 25px;
+            font-size: 14px;
+        }
+
+        .like-button {
+            background-color: transparent;
+            border: none;
+            color: #666;
+            font-size: 14px;
+            cursor: pointer;
+            transition: color 0.3s;
+        }
+
+        .like-button.liked {
+            color: red;
+        }
+
+        .like-button:hover {
+            color: #333;
+        }
+        .publicacion-footer {
+            margin-top: 15px; /* Espacio entre el texto y el botón */
+            display: flex;
+            align-items: center;
         }
 
     </style>
@@ -85,9 +180,13 @@
     </div>
 
     <div class="buttons-container">
+        <button class="button" onclick="cambiarPagina('Inicio.html')"><b>Inicio</b></button>
+        <div style="border-left: 1px solid black; height: 40px;"></div>
         <button class="button" onclick="cambiarPagina('paraTi.html')">Para Ti</button>
         <div style="border-left: 1px solid black; height: 40px;"></div>
         <button class="button" onclick="cambiarPagina('profile.html')">Mi Perfil</button>
+        <div style="border-left: 1px solid black; height: 40px;"></div>
+        <button class="button" onclick="cambiarPagina('busqueda.html')">Buscar</button>
         <div style="border-left: 1px solid black; height: 40px;"></div>
         <button class="button" onclick="cambiarPagina('santinews.html')">Santi News</button>
         <div style="border-left: 1px solid black; height: 40px;"></div>
@@ -100,12 +199,12 @@
         <h2>¡Bienvenido a SantiWeb!</h2>
         <p>Esta es una plataforma única diseñada para conectar personas a través de la figura de Santi. Ya sea que busques compartir experiencias, aprender de otros o simplemente disfrutar de contenido exclusivo, SantiWeb es el lugar perfecto para interactuar con una comunidad que comparte tus intereses.</p>
 
-        <p><strong>La única regla en SantiWeb es Santi.</strong>.</p>
+        <p><strong>La única regla en SantiWeb es Santi:</strong> aquí, el respeto y la positividad son la base de nuestras interacciones. Creemos en un entorno donde todos pueden expresarse libremente, pero siempre con respeto hacia los demás. Esta es una comunidad para disfrutar, aprender y crecer juntos.</p>
 
         <p>Algunos puntos clave sobre SantiWeb:</p>
         <ul>
             <li><strong>Conexión:</strong> Conoce a gente con intereses similares, comparte tus pasiones y descubre nuevas formas de interactuar con otros.</li>
-            <li><strong>Comunidad:</strong> Estamos aquí para apoyar a Santiago y solo a Santiago, no deben ser amigos entre ustedes.</li>
+            <li><strong>Comunidad:</strong> Estamos aquí para apoyarnos mutuamente. La solidaridad y el respeto son fundamentales en nuestra red.</li>
             <li><strong>Contenido exclusivo:</strong> Accede a contenido único de Santi, y participa en eventos y noticias que solo SantiWeb te puede ofrecer.</li>
         </ul>
 
