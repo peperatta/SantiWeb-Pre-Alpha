@@ -63,7 +63,6 @@
             margin-bottom: 20px;
         }
     
-        /* Estilos para la caja de texto */
         #usernameInput {
             width: 100%;
             padding: 12px 20px;
@@ -110,22 +109,33 @@
             border-radius: 5px;
             background-color: #fff;
             box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+            position: relative;
         }
     
         .post-content {
             font-size: 16px;
             color: #333;
+            margin-top: 10px;
         }
     
         .post-date {
+            position: absolute;
+            top: 10px;
+            right: 10px;
             font-size: 12px;
             color: #888;
-            margin-top: 10px;
+        }
+    
+        .post-username {
+            color: #1877f2;
+            font-weight: bold;
+            margin-bottom: 10px;
+            display: inline-block;
         }
     
         #publicacionesContainer {
             overflow-y: auto;
-            max-height: 500px; /* Controlar el tamaño del contenedor */
+            max-height: 500px;
         }
     </style>
 </head>
@@ -134,7 +144,6 @@
         <h1>Santi<em>Web</em></h1>
     </div>
 
-    <!-- Barra de navegación -->
     <div class="buttons-container">
         <button class="button" onclick="cambiarPagina('Inicio.html')">Inicio</button>
         <div style="border-left: 1px solid black; height: 40px;"></div>
@@ -151,7 +160,6 @@
         <button class="button" onclick="cambiarPagina('infopro.html')">Información Extra</button>
     </div>
 
-    <!-- Contenido principal -->
     <div class="content">
         <div class="input-section">
             <h2>¡Busca las publicaciones de tus amigos con su username!</h2>
@@ -159,10 +167,7 @@
             <button onclick="buscarUsuarios()">Buscar</button>
         </div>
 
-        <!-- Contenedor de usuarios -->
         <div id="userContainer" class="user-container"></div>
-
-        <!-- Contenedor de publicaciones -->
         <div id="publicacionesContainer"></div>
     </div>
 
@@ -184,13 +189,12 @@
                 }
 
                 const publicaciones = await response.json();
-                userContainer.innerHTML = ''; // Limpiar contenedor de usuarios anteriores
-                publicacionesContainer.innerHTML = ''; // Limpiar publicaciones previas
+                userContainer.innerHTML = '';
+                publicacionesContainer.innerHTML = '';
 
                 if (publicaciones.length === 0) {
                     userContainer.innerHTML = '<p>No hay publicaciones para este usuario.</p>';
                 } else {
-                    // Mostrar nombre de usuario
                     const userElement = document.createElement('div');
                     userElement.classList.add('user-item');
                     userElement.textContent = username;
@@ -205,7 +209,7 @@
 
         function mostrarPublicaciones(publicaciones, username) {
             const publicacionesContainer = document.getElementById('publicacionesContainer');
-            publicacionesContainer.innerHTML = ''; // Limpiar publicaciones previas
+            publicacionesContainer.innerHTML = '';
 
             const userTitle = document.createElement('h2');
             userTitle.textContent = `Publicaciones de ${username}`;
@@ -216,9 +220,10 @@
                 postElement.classList.add('post');
 
                 postElement.innerHTML = `
+                    <div class="post-username">${username}</div>
+                    <div class="post-date">${publicacion.fecha}</div>
                     <div class="post-content">${publicacion.contenido}</div>
-                    <div class="post-date">Publicado el: ${publicacion.fecha}</div>
-                    <div>Likes: ${publicacion.likes}</div>
+                    <div>👍 ${publicacion.likes}</div>
                 `;
 
                 publicacionesContainer.appendChild(postElement);
