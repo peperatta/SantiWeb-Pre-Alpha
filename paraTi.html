@@ -184,7 +184,6 @@
         <div style="border-left: 1px solid black; height: 40px;"></div>
         <button class="button" onclick="cambiarPagina('infopro.html')">Información Extra</button>
     </div>
-    </div>
 
     <div class="main-container">
         <div class="left-container">
@@ -280,7 +279,6 @@
                             <button 
                                 class="like-button" 
                                 data-post-id="${publicacion.post_id}" 
-                                data-likes="${publicacion.likes}"
                                 onclick="toggleLike(this)">
                                 👍🏻 ${publicacion.likes}
                             </button>
@@ -296,9 +294,13 @@
 
         async function toggleLike(button) {
             const postId = button.getAttribute('data-post-id');
-            const currentLikes = parseInt(button.getAttribute('data-likes'), 10);
-            const username = localStorage.getItem('username') || 'Usuario'; // Asume que user_id está en localStorage
+            const username = localStorage.getItem('username') || 'Usuario';
             const isLiked = button.classList.contains('liked');
+            const currentLikes = parseInt(button.textContent.split(' ')[1], 10) || 0;
+
+            // Mostrar texto temporal y deshabilitar botón
+            button.textContent = '👍🏼 ...';
+            button.disabled = true;
 
             try {
                 const endpoint = isLiked
@@ -316,20 +318,20 @@
                 const result = await response.json();
 
                 if (response.ok) {
-                    const updatedLikes = isLiked ? currentLikes - 1 : currentLikes + 1;
-                    button.textContent = `👍 ${updatedLikes}`;
-                    button.setAttribute('data-likes', updatedLikes); // Actualizamos los datos
+                    const newLikes = isLiked ? currentLikes - 1 : currentLikes + 1;
+                    button.textContent = `👍 ${newLikes}`;
                     button.classList.toggle('liked');
                 } else {
+                    button.textContent = `👍🏻 ${currentLikes}`;
                     alert(result.message || 'Error al procesar el like.');
                 }
             } catch (error) {
                 console.error('Error en la solicitud:', error);
+                button.textContent = `👍🏻 ${currentLikes}`;
+                alert('Error en el servidor. Por favor, intenta de nuevo.');
+            } finally {
+                button.disabled = false;
             }
-        }
-
-        function cambiarPagina(url) {
-            window.location.href = url;
         }
 
         window.onload = cargarPublicaciones;
