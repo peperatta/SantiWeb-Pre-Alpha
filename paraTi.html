@@ -150,6 +150,22 @@
             font-size: 14px;
         }
 
+        .like-button {
+            background-color: transparent;
+            border: none;
+            color: #666;
+            font-size: 14px;
+            cursor: pointer;
+            transition: color 0.3s;
+        }
+
+        .like-button.liked {
+            color: red;
+        }
+
+        .like-button:hover {
+            color: #333;
+        }
     </style>
 </head>
 <body>
@@ -167,6 +183,7 @@
         <button class="button" onclick="cambiarPagina('sobreSanti.html')">Sobre Santi</button>
         <div style="border-left: 1px solid black; height: 40px;"></div>
         <button class="button" onclick="cambiarPagina('infopro.html')">Información Extra</button>
+    </div>
     </div>
 
     <div class="main-container">
@@ -212,12 +229,10 @@
             }
 
             const username = localStorage.getItem('username') || 'Usuario';
-            const fechaHoraActual = new Date().toISOString();
 
             const data = {
                 username: username,
-                contenido: contenido,
-                fecha: fechaHoraActual 
+                contenido: contenido
             };
 
             try {
@@ -256,11 +271,20 @@
                     publicacionDiv.className = 'publicacion';
 
                     publicacionDiv.innerHTML = `
-                    <div class="publicacion-header">
-                    <span class="username">${publicacion.username}</span>
-                    <span class="fecha">${publicacion.fecha}</span>
-                    </div>
-                    <div class="publicacion-contenido">${publicacion.contenido}</div>
+                        <div class="publicacion-header">
+                            <span class="username">${publicacion.username}</span>
+                            <span class="fecha">${publicacion.fecha}</span>
+                        </div>
+                        <div class="publicacion-contenido">${publicacion.contenido}</div>
+                        <div class="publicacion-footer">
+                            <button 
+                                class="like-button" 
+                                data-post-id="${publicacion.post_id}" 
+                                data-likes="${publicacion.likes}"
+                                onclick="toggleLike(this)">
+                                👍🏻 ${publicacion.likes}
+                            </button>
+                        </div>
                     `;
 
                     publicacionesContainer.appendChild(publicacionDiv);
@@ -270,8 +294,41 @@
             }
         }
 
+        async function toggleLike(button) {
+            const postId = button.getAttribute('data-post-id');
+            const currentLikes = parseInt(button.getAttribute('data-likes'), 10);
+            const username = localStorage.getItem('username') || 'Usuario'; // Asume que user_id está en localStorage
+            const isLiked = button.classList.contains('liked');
+
+            try {
+                const endpoint = isLiked
+                    ? 'https://santiwebapi-b9fe9c14de84.herokuapp.com/api/publicaciones/quitar-like'
+                    : 'https://santiwebapi-b9fe9c14de84.herokuapp.com/api/publicaciones/dar-like';
+
+                const response = await fetch(endpoint, {
+                    method: 'POST',
+                    headers: {
+                        'Content-Type': 'application/json',
+                    },
+                    body: JSON.stringify({ username: username, post_id: postId }),
+                });
+
+                const result = await response.json();
+
+                if (response.ok) {
+                    const updatedLikes = isLiked ? currentLikes - 1 : currentLikes + 1;
+                    button.textContent = `👍 ${updatedLikes}`;
+                    button.setAttribute('data-likes', updatedLikes); // Actualizamos los datos
+                    button.classList.toggle('liked');
+                } else {
+                    alert(result.message || 'Error al procesar el like.');
+                }
+            } catch (error) {
+                console.error('Error en la solicitud:', error);
+            }
+        }
+
         function cambiarPagina(url) {
-            const username = getUsernameFromLocalStorage();
             window.location.href = url;
         }
 
