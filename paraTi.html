@@ -173,6 +173,30 @@
             align-items: center;
         }
 
+        /* Estilos para las respuestas */
+        .respuesta {
+            margin-top: 15px;
+            padding: 10px;
+            background-color: #f1f1f1;
+            border: 1px solid #ddd;
+            border-radius: 5px;
+        }
+
+        .respuesta-header {
+            display: flex;
+            justify-content: space-between;
+            font-size: 12px;
+            color: #666;
+        }
+        .respuesta-header .username {
+            color: #1877f2; 
+            font-weight: bold; /* Opcional para resaltar */
+        }
+
+        .respuesta-contenido {
+            margin-top: 10px;
+            font-size: 14px;
+        }
     </style>
 </head>
 <body>
@@ -270,7 +294,7 @@
 
         async function cargarPublicaciones() {
             const publicacionesContainer = document.getElementById('publicacionesContainer');
-            publicacionesContainer.innerHTML = '';
+            publicacionesContainer.innerHTML = '';  // Limpiar el contenedor de publicaciones
 
             try {
                 const response = await fetch('https://santiwebapi-b9fe9c14de84.herokuapp.com/api/publicaciones/ultimas-publicaciones');
@@ -279,7 +303,6 @@
                 publicaciones.forEach(publicacion => {
                     const publicacionDiv = document.createElement('div');
                     publicacionDiv.className = 'publicacion';
-
                     publicacionDiv.innerHTML = `
                         <div class="publicacion-header">
                             <span class="username">${publicacion.username}</span>
@@ -287,12 +310,16 @@
                         </div>
                         <div class="publicacion-contenido">${publicacion.contenido}</div>
                         <div class="publicacion-footer">
-                            <button 
-                                class="like-button" 
-                                data-post-id="${publicacion.post_id}" 
-                                onclick="toggleLike(this)">
+                            <button class="like-button" data-post-id="${publicacion.post_id}" onclick="toggleLike(this)">
                                 👍🏻 ${publicacion.likes}
                             </button>
+                            <button class="like-button" onclick="mostrarCajaTextoRespuestas(${publicacion.post_id})">💬​</button>
+                        </div>
+
+                        <div id="respuesta-container-${publicacion.post_id}" style="display: none;">
+                            <textarea id="respuesta-text-${publicacion.post_id}" placeholder="Escribe una respuesta..."></textarea>
+                            <button class="like-button" onclick="enviarRespuesta(${publicacion.post_id})">Enviar</button>
+                            <div id="respuestas-${publicacion.post_id}"></div>
                         </div>
                     `;
 
@@ -303,50 +330,86 @@
             }
         }
 
-        async function toggleLike(button) {
-            const postId = button.getAttribute('data-post-id');
-            const username = localStorage.getItem('username') || 'Usuario';
-            const isLiked = button.classList.contains('liked');
-            const currentLikes = parseInt(button.textContent.split(' ')[1], 10) || 0;
-
-            // Mostrar texto temporal y deshabilitar botón
-            button.textContent = '👍🏼 ...';
-            button.disabled = true;
-
+        async function cargarRespuestas(postId) {
+            const respuestasContainer = document.getElementById(`respuestas-${postId}`);
             try {
-                const endpoint = isLiked
-                    ? 'https://santiwebapi-b9fe9c14de84.herokuapp.com/api/publicaciones/quitar-like'
-                    : 'https://santiwebapi-b9fe9c14de84.herokuapp.com/api/publicaciones/dar-like';
+                const response = await fetch(`https://santiwebapi-b9fe9c14de84.herokuapp.com/api/publicaciones/respuestas/${postId}`);
+                const respuestas = await response.json();
+                respuestasContainer.innerHTML = '';  // Limpiar las respuestas anteriores
 
-                const response = await fetch(endpoint, {
-                    method: 'POST',
-                    headers: {
-                        'Content-Type': 'application/json',
-                    },
-                    body: JSON.stringify({ username: username, post_id: postId }),
+                respuestas.forEach(respuesta => {
+                    const respuestaDiv = document.createElement('div');
+                    respuestaDiv.className = 'respuesta';
+
+                    respuestaDiv.innerHTML = `
+                        <div class="respuesta-header">
+                            <span class="username">${respuesta.username}</span>
+                            <span class="fecha">${respuesta.fecha}</span>
+                        </div>
+                        <div class="respuesta-contenido">${respuesta.contenido}</div>
+                    `;
+
+                    respuestasContainer.appendChild(respuestaDiv);
                 });
-
-                const result = await response.json();
-
-                if (response.ok) {
-                    const newLikes = isLiked ? currentLikes - 1 : currentLikes + 1;
-                    button.textContent = `👍 Enviado`;
-                    button.classList.toggle('liked');
-                } else {
-                    button.textContent = `👍🏻 ${currentLikes}`;
-                    alert(result.message || 'Error al procesar el like.');
-                }
             } catch (error) {
-                console.error('Error en la solicitud:', error);
-                button.textContent = `👍🏻 ${currentLikes}`;
-                alert('Error en el servidor. Por favor, intenta de nuevo.');
-            } finally {
-                button.disabled = false;
+                console.error('Error al cargar las respuestas:', error);
             }
         }
         function cambiarPagina(url) {
             window.location.href = url;
         }
+
+        function mostrarCajaTextoRespuestas(postId) {
+            const respuestaContainer = document.getElementById(`respuesta-container-${postId}`);
+            if (respuestaContainer.style.display === 'none') {
+                respuestaContainer.style.display = 'block';
+            } else {
+                respuestaContainer.style.display = 'none';
+            }
+
+            cargarRespuestas(postId);
+        }
+
+        async function enviarRespuesta(postId) {
+            const respuestaText = document.getElementById(`respuesta-text-${postId}`).value;
+            const errorMessageElement = document.getElementById('error-message');
+
+            if (!respuestaText) {
+                errorMessageElement.textContent = 'La respuesta no puede estar vacía.';
+                return;
+            }
+
+            const username = localStorage.getItem('username') || 'Usuario';
+
+            const data = {
+                username: username,
+                post_id: postId,
+                contenido: respuestaText
+            };
+
+            try {
+                const response = await fetch('https://santiwebapi-b9fe9c14de84.herokuapp.com/api/publicaciones/responder', {
+                    method: 'POST',
+                    headers: {
+                        'Content-Type': 'application/json'
+                    },
+                    body: JSON.stringify(data)
+                });
+
+                const result = await response.json();
+
+                if (response.ok) {
+                    errorMessageElement.textContent = '';  // Limpiar el mensaje de error
+                    cargarRespuestas(postId);  // Recargar las respuestas después de enviar una
+                    document.getElementById(`respuesta-text-${postId}`).value = ''; // Limpiar el campo de respuesta
+                } else {
+                    errorMessageElement.textContent = result.message || 'Error al publicar respuesta';
+                }
+            } catch (error) {
+                errorMessageElement.textContent = 'Error en el servidor: ' + error.message;
+            }
+        }
+        
         window.onload = cargarPublicaciones;
     </script>
 </body>
