@@ -289,6 +289,10 @@
         function mostrarCajaTextoRespuestas(postId) {
             const respuestaContainer = document.getElementById(`respuesta-container-${postId}`);
             respuestaContainer.style.display = respuestaContainer.style.display === 'none' ? 'block' : 'none';
+            if (respuestaContainer.style.display === 'block') {
+                cargarRespuestas(postId);
+            }
+
         }
 
         async function enviarRespuesta(postId) {
