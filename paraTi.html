@@ -86,39 +86,6 @@
             overflow-y: auto;
         }
 
-        .welcome-message {
-            font-size: 15px;
-            color: #333;
-            margin: 20px;
-        }
-
-        .input-container {
-            margin-top: 30px;
-            display: flex;
-            flex-direction: column;
-            align-items: center;
-            display: none;
-        }
-
-        .input-field {
-            width: 300px;
-            padding: 10px;
-            font-size: 16px;
-            border: 1px solid #ccc;
-            border-radius: 5px;
-            box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
-        }
-
-        .message {
-            color: green;
-            margin-top: 20px;
-        }
-
-        .error-message {
-            color: red;
-            margin-top: 20px;
-        }
-
         .publicacion {
             border: 1px solid #ccc;
             border-radius: 5px;
@@ -167,13 +134,13 @@
         .like-button:hover {
             color: #333;
         }
+
         .publicacion-footer {
-            margin-top: 15px; /* Espacio entre el texto y el botón */
+            margin-top: 15px;
             display: flex;
             align-items: center;
         }
 
-        /* Estilos para las respuestas */
         .respuesta {
             margin-top: 15px;
             padding: 10px;
@@ -188,15 +155,23 @@
             font-size: 12px;
             color: #666;
         }
+
         .respuesta-header .username {
             color: #1877f2; 
-            font-weight: bold; /* Opcional para resaltar */
+            font-weight: bold;
         }
 
         .respuesta-contenido {
             margin-top: 10px;
             font-size: 14px;
         }
+        .input-container {
+            display: none; /* Mantenerlo oculto al cargar la página */
+            margin-top: 30px;
+            flex-direction: column;
+            align-items: center;
+        }
+
     </style>
 </head>
 <body>
@@ -224,12 +199,10 @@
         <div class="left-container">
             <h3>Escribe lo que Santi te hace pensar o sentir</h3>
             <button class="button" id="opinarButton" onclick="mostrarFormulario()">Opinar</button>
-
             <div class="input-container" id="inputContainer">
                 <textarea id="contenido" class="input-field" rows="4" placeholder="Escribe lo que piensas aquí..."></textarea>
                 <button class="button" onclick="enviarPublicacion()">Publicar</button>
             </div>
-
             <div id="message" class="message"></div>
             <div id="error-message" class="error-message"></div>
         </div>
@@ -240,61 +213,20 @@
     </div>
 
     <script>
-        function getUsernameFromLocalStorage() {
-            return localStorage.getItem('username') || 'Usuario';
-        }
-
         function mostrarFormulario() {
             const inputContainer = document.getElementById('inputContainer');
-            inputContainer.style.display = 'flex';
-        }
-
-        async function enviarPublicacion() {
-            const contenido = document.getElementById('contenido').value;
-            const messageElement = document.getElementById('message');
-            const errorMessageElement = document.getElementById('error-message');
-
-            messageElement.textContent = '';
-            errorMessageElement.textContent = '';
-
-            if (!contenido) {
-                errorMessageElement.textContent = 'El contenido no puede estar vacío.';
-                return;
-            }
-
-            const username = localStorage.getItem('username') || 'Usuario';
-
-            const data = {
-                username: username,
-                contenido: contenido
-            };
-
-            try {
-                const response = await fetch('https://santiwebapi-b9fe9c14de84.herokuapp.com/api/publicaciones/publicar', {
-                    method: 'POST',
-                    headers: {
-                        'Content-Type': 'application/json'
-                    },
-                    body: JSON.stringify(data)
-                });
-
-                const result = await response.json();
-
-                if (response.ok) {
-                    messageElement.textContent = result.message;
-                    document.getElementById('contenido').value = '';
-                    cargarPublicaciones();
-                } else {
-                    errorMessageElement.textContent = result.message || 'Error al publicar';
-                }
-            } catch (error) {
-                errorMessageElement.textContent = 'Error en el servidor: ' + error.message;
+            // Alternar entre mostrar y ocultar
+            if (inputContainer.style.display === 'flex') {
+                inputContainer.style.display = 'none';
+            } else {
+                inputContainer.style.display = 'flex';
             }
         }
+
 
         async function cargarPublicaciones() {
             const publicacionesContainer = document.getElementById('publicacionesContainer');
-            publicacionesContainer.innerHTML = '';  // Limpiar el contenedor de publicaciones
+            publicacionesContainer.innerHTML = ''; 
 
             try {
                 const response = await fetch('https://santiwebapi-b9fe9c14de84.herokuapp.com/api/publicaciones/ultimas-publicaciones');
@@ -313,16 +245,16 @@
                             <button class="like-button" data-post-id="${publicacion.post_id}" onclick="toggleLike(this)">
                                 👍🏻 ${publicacion.likes}
                             </button>
-                            <button class="like-button" onclick="mostrarCajaTextoRespuestas(${publicacion.post_id})">💬​</button>
+                            <button class="like-button" onclick="mostrarCajaTextoRespuestas(${publicacion.post_id})">
+                                💬​
+                            </button>
                         </div>
-
                         <div id="respuesta-container-${publicacion.post_id}" style="display: none;">
                             <textarea id="respuesta-text-${publicacion.post_id}" placeholder="Escribe una respuesta..."></textarea>
                             <button class="like-button" onclick="enviarRespuesta(${publicacion.post_id})">Enviar</button>
                             <div id="respuestas-${publicacion.post_id}"></div>
                         </div>
                     `;
-
                     publicacionesContainer.appendChild(publicacionDiv);
                 });
             } catch (error) {
@@ -330,62 +262,44 @@
             }
         }
 
-        async function cargarRespuestas(postId) {
-            const respuestasContainer = document.getElementById(`respuestas-${postId}`);
+        async function toggleLike(button) {
+            const postId = button.getAttribute('data-post-id');
+            const username = localStorage.getItem('username') || 'Usuario';
+            const data = { username, post_id: postId };
+
             try {
-                const response = await fetch(`https://santiwebapi-b9fe9c14de84.herokuapp.com/api/publicaciones/respuestas/${postId}`);
-                const respuestas = await response.json();
-                respuestasContainer.innerHTML = '';  // Limpiar las respuestas anteriores
-
-                respuestas.forEach(respuesta => {
-                    const respuestaDiv = document.createElement('div');
-                    respuestaDiv.className = 'respuesta';
-
-                    respuestaDiv.innerHTML = `
-                        <div class="respuesta-header">
-                            <span class="username">${respuesta.username}</span>
-                            <span class="fecha">${respuesta.fecha}</span>
-                        </div>
-                        <div class="respuesta-contenido">${respuesta.contenido}</div>
-                    `;
-
-                    respuestasContainer.appendChild(respuestaDiv);
+                const response = await fetch('https://santiwebapi-b9fe9c14de84.herokuapp.com/api/publicaciones/dar-like', {
+                    method: 'POST',
+                    headers: { 'Content-Type': 'application/json' },
+                    body: JSON.stringify(data)
                 });
+
+                if (response.ok) {
+                    const result = await response.json();
+                    button.classList.toggle('liked');
+                    cargarPublicaciones();
+                } else {
+                    console.error('Error al dar like');
+                }
             } catch (error) {
-                console.error('Error al cargar las respuestas:', error);
+                console.error('Error:', error);
             }
-        }
-        function cambiarPagina(url) {
-            window.location.href = url;
         }
 
         function mostrarCajaTextoRespuestas(postId) {
             const respuestaContainer = document.getElementById(`respuesta-container-${postId}`);
-            if (respuestaContainer.style.display === 'none') {
-                respuestaContainer.style.display = 'block';
-            } else {
-                respuestaContainer.style.display = 'none';
-            }
-
-            cargarRespuestas(postId);
+            respuestaContainer.style.display = respuestaContainer.style.display === 'none' ? 'block' : 'none';
         }
 
         async function enviarRespuesta(postId) {
             const respuestaText = document.getElementById(`respuesta-text-${postId}`).value;
-            const errorMessageElement = document.getElementById('error-message');
 
             if (!respuestaText) {
-                errorMessageElement.textContent = 'La respuesta no puede estar vacía.';
+                alert('La respuesta no puede estar vacía.');
                 return;
             }
 
             const username = localStorage.getItem('username') || 'Usuario';
-
-            const data = {
-                username: username,
-                post_id: postId,
-                contenido: respuestaText
-            };
 
             try {
                 const response = await fetch('https://santiwebapi-b9fe9c14de84.herokuapp.com/api/publicaciones/responder', {
@@ -393,23 +307,73 @@
                     headers: {
                         'Content-Type': 'application/json'
                     },
-                    body: JSON.stringify(data)
+                    body: JSON.stringify({ username, post_id: postId, contenido: respuestaText })
                 });
 
-                const result = await response.json();
-
                 if (response.ok) {
-                    errorMessageElement.textContent = '';  // Limpiar el mensaje de error
-                    cargarRespuestas(postId);  // Recargar las respuestas después de enviar una
-                    document.getElementById(`respuesta-text-${postId}`).value = ''; // Limpiar el campo de respuesta
-                } else {
-                    errorMessageElement.textContent = result.message || 'Error al publicar respuesta';
+                    cargarRespuestas(postId);
+                    document.getElementById(`respuesta-text-${postId}`).value = '';
                 }
             } catch (error) {
-                errorMessageElement.textContent = 'Error en el servidor: ' + error.message;
+                console.error('Error al enviar la respuesta:', error);
             }
         }
-        
+
+        async function cargarRespuestas(postId) {
+            const respuestasContainer = document.getElementById(`respuestas-${postId}`);
+            respuestasContainer.innerHTML = '';
+
+            try {
+                const response = await fetch(`https://santiwebapi-b9fe9c14de84.herokuapp.com/api/publicaciones/respuestas/${postId}`);
+                const respuestas = await response.json();
+
+                respuestas.forEach(respuesta => {
+                    const respuestaDiv = document.createElement('div');
+                    respuestaDiv.className = 'respuesta';
+                    respuestaDiv.innerHTML = `
+                        <div class="respuesta-header">
+                            <span class="username">${respuesta.username}</span>
+                            <span class="fecha">${respuesta.fecha}</span>
+                        </div>
+                        <div class="respuesta-contenido">${respuesta.contenido}</div>
+                    `;
+                    respuestasContainer.appendChild(respuestaDiv);
+                });
+            } catch (error) {
+                console.error('Error al cargar las respuestas:', error);
+            }
+        }
+
+        async function enviarPublicacion() {
+            const contenido = document.getElementById('contenido').value;
+
+            if (!contenido) {
+                alert('El contenido no puede estar vacío.');
+                return;
+            }
+
+            const username = localStorage.getItem('username') || 'Usuario';
+
+            try {
+                const response = await fetch('https://santiwebapi-b9fe9c14de84.herokuapp.com/api/publicaciones/publicar', {
+                    method: 'POST',
+                    headers: {
+                        'Content-Type': 'application/json'
+                    },
+                    body: JSON.stringify({ username, contenido })
+                });
+
+                if (response.ok) {
+                    cargarPublicaciones();
+                    document.getElementById('contenido').value = '';
+                }
+            } catch (error) {
+                console.error('Error al publicar:', error);
+            }
+        }
+        function cambiarPagina(url) {
+            window.location.href = url;
+        }
         window.onload = cargarPublicaciones;
     </script>
 </body>
