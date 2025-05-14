@@ -1,0 +1,66 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>Santi News - SantiWeb</title>
+  <link rel="stylesheet" href="estilos.css" />
+</head>
+<body>
+  <!-- Sidebar lateral -->
+  <div class="sidebar">
+    <h1>Santi<em>Web</em></h1>
+    <button class="nav-button" onclick="cambiarPagina('Inicio.html')">Inicio</button>
+    <button class="nav-button" onclick="cambiarPagina('paraTi.html')">Para Ti</button>
+    <button class="nav-button" onclick="cambiarPagina('profile.html')">Mi Perfil</button>
+    <button class="nav-button" onclick="cambiarPagina('busqueda.html')">Buscar</button>
+    <button class="nav-button" onclick="cambiarPagina('santinews.html')"><b>Santi News</b></button>
+    <button class="nav-button" onclick="cambiarPagina('sobreSanti.html')">Sobre Santi</button>
+    <button class="nav-button" onclick="cambiarPagina('infopro.html')">Información Extra</button>
+  </div>
+
+  <!-- Área principal -->
+  <div class="main">
+    <h2>📰 Santi News</h2>
+    <div class="publicaciones-list">
+      <div class="publicacion">
+        <p><strong>¡Ganador!</strong><br>Santi debutó en su nuevo equipo "Club Penguin" este <b>22 de Febrero del 2025</b>. ¡Ganaron 3-1!</p>
+      </div>
+
+      <div class="publicacion">
+        <p><strong>Somos un ejército</strong><br>Hoy <b>28 de Noviembre del 2024</b> llegamos a los <b>50 usuarios registrados</b>. ¡Gracias por creer en nosotros! 🎉</p>
+      </div>
+
+      <div class="publicacion">
+        <p><strong>¡Mejoras, mejoras y MEJORAS!</strong><br>El <b>24 de Noviembre del 2024</b> se implementaron los likes y las respuestas. 💬❤️</p>
+      </div>
+
+      <div class="publicacion">
+        <p><strong>Nos ha nacido un niño</strong><br>SantiWeb fue lanzado oficialmente el <b>22 de Noviembre del 2024</b>, logrando 20 registros en horas.</p>
+      </div>
+
+      <div class="publicacion">
+        <p><strong>¡Dominio!</strong><br>El <b>16 de Noviembre del 2024</b> compramos <b>SantiWeb.online</b> para consolidar el proyecto. 🌐</p>
+      </div>
+
+      <div class="publicacion">
+        <p><strong>Regreso Triunfal</strong><br>El <b>11 de Noviembre del 2024</b>, nuestro creador retomó el backend con más visión y experiencia. 🔧</p>
+      </div>
+
+      <div class="publicacion">
+        <p><strong>Pequeña pausa</strong><br>El <b>7 de Diciembre del 2023</b> iniciamos el front-end, pero se suspendió temporalmente por temas escolares.</p>
+      </div>
+
+      <div class="publicacion">
+        <p><strong>Nace la idea</strong><br>Un <b>16 de Noviembre del 2023</b> surgió la visión original de lo que hoy es SantiWeb. 💡</p>
+      </div>
+    </div>
+  </div>
+
+  <script>
+    function cambiarPagina(url) {
+      window.location.href = url;
+    }
+  </script>
+</body>
+</html>

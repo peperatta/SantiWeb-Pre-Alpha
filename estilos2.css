@@ -1,0 +1,90 @@
+body {
+    background-color: #f0f2f5;
+    font-family: Arial, sans-serif;
+    margin: 0;
+    padding: 0;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    height: 100vh;
+}
+
+.container {
+    display: flex;
+    width: 80%;
+    max-width: 1200px;
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+    background-color: #ffffff;
+    border-radius: 8px;
+}
+
+.left-section, .right-section {
+    padding: 40px;
+}
+
+.left-section {
+    flex: 1;
+    background-color: #f0f2f5;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    text-align: left;
+}
+
+.left-section h1 {
+    color: #1877f2;
+    font-size: 48px;
+    margin-bottom: 10px;
+}
+
+.left-section p {
+    font-size: 20px;
+    color: #606770;
+}
+
+.right-section {
+    flex: 1;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+}
+
+input {
+    width: 100%;
+    padding: 12px;
+    margin: 8px 0;
+    border: 1px solid #ccc;
+    border-radius: 8px;
+    box-sizing: border-box;
+    }
+
+button {
+    width: 100%;
+    padding: 15px;
+    background-color: #1877f2;
+    color: white;
+    border: none;
+    border-radius: 8px;
+    font-size: 16px;
+    cursor: pointer;
+    transition: background-color 0.3s;
+    margin-top: 10px;
+}
+
+button:hover {
+    background-color: #365ff4;
+    }
+
+#message {
+    margin-top: 15px;
+    font-size: 14px;
+}
+
+.secondary-button {
+    background-color: #e4e6eb;
+    color: #333;
+}
+
+.secondary-button:hover {
+    background-color: #d0d3d8;
+}

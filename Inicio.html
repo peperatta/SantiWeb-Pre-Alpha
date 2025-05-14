@@ -1,0 +1,59 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>Inicio - SantiWeb</title>
+  <link rel="stylesheet" href="estilos.css" />
+</head>
+<body>
+  <div class="sidebar">
+    <h1>Santi<em>Web</em></h1>
+    <button class="nav-button" onclick="cambiarPagina('Inicio.html')">Inicio</button>
+    <button class="nav-button" onclick="cambiarPagina('paraTi.html')">Para Ti</button>
+    <button class="nav-button" onclick="cambiarPagina('profile.html')">Mi Perfil</button>
+    <button class="nav-button" onclick="cambiarPagina('busqueda.html')">Buscar</button>
+    <button class="nav-button" onclick="cambiarPagina('santinews.html')">Santi News</button>
+    <button class="nav-button" onclick="cambiarPagina('sobreSanti.html')">Sobre Santi</button>
+    <button class="nav-button" onclick="cambiarPagina('infopro.html')">Información Extra</button>
+  </div>
+
+  <div class="main">
+    <div class="welcome-message" id="usernameDisplay">
+      <h2>¡Bienvenido a SantiWeb!</h2>
+      <p>Esta es una plataforma única diseñada para conectar personas a través de la figura de Santi. Ya sea que busques compartir experiencias, aprender de otros o simplemente disfrutar de contenido exclusivo, SantiWeb es el lugar perfecto para interactuar con una comunidad que comparte tus intereses.</p>
+
+      <p><strong>La única regla en SantiWeb es Santi:</strong> aquí, el respeto y la positividad son la base de nuestras interacciones. Creemos en un entorno donde todos pueden expresarse libremente, pero siempre con respeto hacia los demás. Esta es una comunidad para disfrutar, aprender y crecer juntos.</p>
+
+      <p>Algunos puntos clave sobre SantiWeb:</p>
+      <ul>
+        <li><strong>Conexión:</strong> Conoce a gente con intereses similares, comparte tus pasiones y descubre nuevas formas de interactuar con otros.</li>
+        <li><strong>Comunidad:</strong> Estamos aquí para apoyarnos mutuamente. La solidaridad y el respeto son fundamentales en nuestra red.</li>
+        <li><strong>Contenido exclusivo:</strong> Accede a contenido único de Santi, y participa en eventos y noticias que solo SantiWeb te puede ofrecer.</li>
+      </ul>
+
+      <p>Estamos encantados de tenerte con nosotros. ¡Disfruta de SantiWeb y haz de esta plataforma un lugar aún mejor para todos!</p>
+    </div>
+  </div>
+
+  <script>
+    function getUsernameFromLocalStorage() {
+      return localStorage.getItem('username') || 'Usuario';
+    }
+
+    function cambiarPagina(url) {
+      window.location.href = url;
+    }
+
+    // Mostrar el nombre de usuario
+    const username = getUsernameFromLocalStorage();
+    if (username === 'Usuario') {
+      window.location.href = 'iniciosesion.html';
+    } else {
+      document.getElementById('usernameDisplay').innerHTML =
+        `Hola, <strong>${username}</strong><br><br>` +
+        document.getElementById('usernameDisplay').innerHTML;
+    }
+  </script>
+</body>
+</html>

@@ -1,0 +1,68 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <title>SantiWeb - Registro</title>
+    <link rel="stylesheet" href="estilos2.css" />
+    
+</head>
+<body>
+
+<div class="container">
+    <div class="left-section">
+        <h1>SantiWeb</h1>
+        <p>La plataforma que te permite compartir con quienes forman parte de tu vida y la de Santi.</p>
+    </div>
+    <div class="right-section">
+        <h2>Registro</h2>
+        <form id="registerForm">
+            <input type="text" id="regUsername" placeholder="Username" required>
+            <input type="password" id="regPassword" placeholder="Password" required>
+            <input type="text" id="regName" placeholder="Nombre" required>
+            <button type="submit">Registrar</button>
+        </form>
+        <button class="secondary-button" onclick="window.location.href='iniciosesion.html'">Iniciar sesión</button>
+
+        <div id="message"></div>
+    </div>
+</div>
+
+<script>
+    const API_URL = 'https://santiwebapi-b9fe9c14de84.herokuapp.com/api/usuarios';
+
+    function showMessage(message, isError = false) {
+        const msgDiv = document.getElementById('message');
+        msgDiv.textContent = message;
+        msgDiv.style.color = isError ? 'red' : 'green';
+    }
+
+    document.getElementById('registerForm').addEventListener('submit', async (e) => {
+        e.preventDefault();
+        const username = document.getElementById('regUsername').value;
+        const password = document.getElementById('regPassword').value;
+        const nombre = document.getElementById('regName').value;
+
+        try {
+            const response = await fetch(`${API_URL}/register`, {
+                method: 'POST',
+                headers: { 'Content-Type': 'application/json' },
+                body: JSON.stringify({ username, contraseña: password, nombre })
+            });
+
+            if (response.status === 409) {
+                showMessage('El usuario ya existe', true);
+            } else if (response.ok) {
+                showMessage('Usuario registrado exitosamente');
+                // Redirigir a la página de inicio de sesión y pasar el nombre de usuario
+                window.location.href = `iniciosesion.html?username=${encodeURIComponent(username)}`;
+            } else {
+                showMessage('Error al registrar usuario', true);
+            }
+        } catch (error) {
+            showMessage('Error de conexión', true);
+        }
+    });
+</script>
+
+</body>
+</html>

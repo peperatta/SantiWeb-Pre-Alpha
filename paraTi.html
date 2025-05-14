@@ -1,0 +1,208 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>Para Ti - SantiWeb</title>
+  <link rel="stylesheet" href="estilos.css" />
+</head>
+<body>
+  <!-- Sidebar lateral -->
+  <div class="sidebar">
+    <h1>Santi<em>Web</em></h1>
+    <button class="nav-button" onclick="cambiarPagina('Inicio.html')">Inicio</button>
+    <button class="nav-button" onclick="cambiarPagina('paraTi.html')"><b>Para Ti</b></button>
+    <button class="nav-button" onclick="cambiarPagina('profile.html')">Mi Perfil</button>
+    <button class="nav-button" onclick="cambiarPagina('busqueda.html')">Buscar</button>
+    <button class="nav-button" onclick="cambiarPagina('santinews.html')">Santi News</button>
+    <button class="nav-button" onclick="cambiarPagina('sobreSanti.html')">Sobre Santi</button>
+    <button class="nav-button" onclick="cambiarPagina('infopro.html')">Información Extra</button>
+  </div>
+
+  <!-- Contenido principal -->
+  <div class="main">
+    <div class="publicaciones-layout">
+      <div class="publicaciones-form">
+        <h3>¿Qué te inspira Santi hoy?</h3>
+        <button class="button" id="opinarButton" onclick="mostrarFormulario()">Opinar</button>
+        <div class="input-container" id="inputContainer" style="display: none;">
+          <textarea id="contenido" class="input-field" rows="4" placeholder="Escribe lo que piensas aquí..."></textarea>
+          <button class="button" onclick="enviarPublicacion()">Publicar</button>
+        </div>
+        <div id="message" class="message"></div>
+        <div id="error-message" class="error-message"></div>
+      </div>
+
+      <div class="publicaciones-list" id="publicacionesContainer">
+        <!-- Publicaciones aparecerán aquí -->
+      </div>
+    </div>
+  </div>
+
+  <!-- Scripts -->
+  <script>
+    function cambiarPagina(url) {
+      window.location.href = url;
+    }
+
+    function mostrarFormulario() {
+      const inputContainer = document.getElementById('inputContainer');
+      inputContainer.style.display = inputContainer.style.display === 'flex' ? 'none' : 'flex';
+    }
+
+    async function cargarPublicaciones() {
+      const container = document.getElementById('publicacionesContainer');
+      container.innerHTML = '';
+
+      try {
+        const response = await fetch('https://santiwebapi-b9fe9c14de84.herokuapp.com/api/publicaciones/ultimas-publicaciones');
+        const publicaciones = await response.json();
+
+        publicaciones.forEach(pub => {
+          let avatarSrc;
+
+          if (pub.username === 'Creador') {
+            avatarSrc = 'img/SANTIGOD.png';
+          } else {
+            const letra = pub.username?.[0]?.toUpperCase() || 'A';
+            let grupo = 1;
+
+            if ('FGHIJ'.includes(letra)) grupo = 2;
+            else if ('KLMNO'.includes(letra)) grupo = 3;
+            else if ('PQRST'.includes(letra)) grupo = 4;
+            else if ('UVWXYZ'.includes(letra)) grupo = 5;
+
+            avatarSrc = `img/SANTIWEB${grupo === 1 ? '' : grupo}.png`;
+          }
+
+          const esCreador = pub.username === 'Creador';
+          const claseUsername = esCreador ? 'username creador' : 'username';
+
+          const div = document.createElement('div');
+          div.className = 'publicacion';
+          div.innerHTML = `
+            <div class="publicacion-header">
+              <div class="avatar">
+                <img src="${avatarSrc}" alt="Avatar" />
+              </div>
+              <div>
+                <div class="${claseUsername}">${pub.username}</div>
+                <div class="fecha">${pub.fecha}</div>
+              </div>
+            </div>
+            <div class="publicacion-contenido">${pub.contenido}</div>
+            <div class="publicacion-footer">
+              <button class="like-button" data-post-id="${pub.post_id}" onclick="toggleLike(this)">❤️ ${pub.likes}</button>
+              <button class="like-button" onclick="mostrarCajaTextoRespuestas(${pub.post_id})">💬 Comentar</button>
+            </div>
+            <div id="respuesta-container-${pub.post_id}" class="respuesta-box" style="display: none;">
+              <textarea id="respuesta-text-${pub.post_id}" class="input-field" placeholder="Escribe una respuesta..."></textarea>
+              <button class="button" onclick="enviarRespuesta(${pub.post_id})">Enviar</button>
+              <div id="respuestas-${pub.post_id}"></div>
+            </div>
+          `;
+          container.appendChild(div);
+        });
+      } catch (error) {
+        console.error('Error al cargar las publicaciones:', error);
+      }
+    }
+
+    async function toggleLike(button) {
+      const postId = button.getAttribute('data-post-id');
+      const username = localStorage.getItem('username') || 'Usuario';
+      const data = { username, post_id: postId };
+
+      try {
+        const response = await fetch('https://santiwebapi-b9fe9c14de84.herokuapp.com/api/publicaciones/dar-like', {
+          method: 'POST',
+          headers: { 'Content-Type': 'application/json' },
+          body: JSON.stringify(data)
+        });
+
+        if (response.ok) {
+          button.classList.toggle('liked');
+          cargarPublicaciones();
+        }
+      } catch (error) {
+        console.error('Error al dar like:', error);
+      }
+    }
+
+    function mostrarCajaTextoRespuestas(postId) {
+      const contenedor = document.getElementById(`respuesta-container-${postId}`);
+      contenedor.style.display = contenedor.style.display === 'none' ? 'block' : 'none';
+      if (contenedor.style.display === 'block') cargarRespuestas(postId);
+    }
+
+    async function enviarRespuesta(postId) {
+      const texto = document.getElementById(`respuesta-text-${postId}`).value;
+      if (!texto) return alert('La respuesta no puede estar vacía.');
+      const username = localStorage.getItem('username') || 'Usuario';
+
+      try {
+        const res = await fetch('https://santiwebapi-b9fe9c14de84.herokuapp.com/api/publicaciones/responder', {
+          method: 'POST',
+          headers: { 'Content-Type': 'application/json' },
+          body: JSON.stringify({ username, post_id: postId, contenido: texto })
+        });
+
+        if (res.ok) {
+          cargarRespuestas(postId);
+          document.getElementById(`respuesta-text-${postId}`).value = '';
+        }
+      } catch (error) {
+        console.error('Error al responder:', error);
+      }
+    }
+
+    async function cargarRespuestas(postId) {
+      const contenedor = document.getElementById(`respuestas-${postId}`);
+      contenedor.innerHTML = '';
+
+      try {
+        const res = await fetch(`https://santiwebapi-b9fe9c14de84.herokuapp.com/api/publicaciones/respuestas/${postId}`);
+        const respuestas = await res.json();
+
+        respuestas.forEach(r => {
+          const div = document.createElement('div');
+          div.className = 'respuesta';
+          div.innerHTML = `
+            <div class="respuesta-header">
+              <span class="username">${r.username}</span>
+              <span class="fecha">${r.fecha}</span>
+            </div>
+            <div class="respuesta-contenido">${r.contenido}</div>
+          `;
+          contenedor.appendChild(div);
+        });
+      } catch (error) {
+        console.error('Error al cargar respuestas:', error);
+      }
+    }
+
+    async function enviarPublicacion() {
+      const contenido = document.getElementById('contenido').value;
+      if (!contenido) return alert('El contenido no puede estar vacío.');
+      const username = localStorage.getItem('username') || 'Usuario';
+
+      try {
+        const res = await fetch('https://santiwebapi-b9fe9c14de84.herokuapp.com/api/publicaciones/publicar', {
+          method: 'POST',
+          headers: { 'Content-Type': 'application/json' },
+          body: JSON.stringify({ username, contenido })
+        });
+
+        if (res.ok) {
+          cargarPublicaciones();
+          document.getElementById('contenido').value = '';
+        }
+      } catch (error) {
+        console.error('Error al publicar:', error);
+      }
+    }
+
+    window.onload = cargarPublicaciones;
+  </script>
+</body>
+</html>
