@@ -88,7 +88,7 @@ html, body {
 
 /* Botones */
 .button {
-  background-color: #00bcd4;
+  background-color: #1877f2;
   border: none;
   color: white;
   padding: 10px;
@@ -98,7 +98,7 @@ html, body {
 }
 
 .button:hover {
-  background-color: #0097a7;
+  background-color: #1355ab;
 }
 
 .input-container {
